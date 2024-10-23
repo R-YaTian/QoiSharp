@@ -12,9 +12,10 @@ public static class QoiEncoder
     /// Encodes raw pixel data into QOI.
     /// </summary>
     /// <param name="image">QOI image.</param>
+    /// <param name="bSwapBR">Swap B and R channel, if true</param>
     /// <returns>Encoded image.</returns>
     /// <exception cref="QoiEncodingException">Thrown when image information is invalid.</exception>
-    public static byte[] Encode(QoiImage image)
+    public static byte[] Encode(QoiImage image, bool bSwapBR = false)
     {
         if (image.Width == 0)
         {
@@ -74,9 +75,9 @@ public static class QoiEncoder
 
         for (int pxPos = 0; pxPos < pixelsLength; pxPos += channels)
         {
-            r = pixels[pxPos + 2];
+            r = bSwapBR ? pixels[pxPos + 2] : pixels[pxPos];
             g = pixels[pxPos + 1];
-            b = pixels[pxPos];
+            b = bSwapBR ? pixels[pxPos] : pixels[pxPos + 2];
             if (hasAlpha)
             {
                 a = pixels[pxPos + 3];
